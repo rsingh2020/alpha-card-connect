@@ -10,6 +10,7 @@ import Wallet from "./pages/Wallet";
 import BestCard from "./pages/BestCard";
 import Benefits from "./pages/Benefits";
 import Offers from "./pages/Offers";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -64,6 +65,7 @@ const App = () => (
           <Route path="/best" element={<ProtectedRoute><BestCard /></ProtectedRoute>} />
           <Route path="/benefits" element={<ProtectedRoute><Benefits /></ProtectedRoute>} />
           <Route path="/offers" element={<ProtectedRoute><Offers /></ProtectedRoute>} />
+          <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

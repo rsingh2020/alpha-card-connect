@@ -1,12 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Wallet, Sparkles, Gift, Tag } from 'lucide-react';
+import { LayoutDashboard, Wallet, Sparkles, Gift, BarChart3 } from 'lucide-react';
 
 const navItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { path: '/wallet', icon: Wallet, label: 'Wallet' },
   { path: '/best', icon: Sparkles, label: 'Best' },
   { path: '/benefits', icon: Gift, label: 'Benefits' },
-  { path: '/offers', icon: Tag, label: 'Offers' },
+  { path: '/analytics', icon: BarChart3, label: 'Analytics' },
 ];
 
 export function BottomNav() {
