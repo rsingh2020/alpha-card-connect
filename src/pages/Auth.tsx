@@ -17,6 +17,9 @@ const authSchema = z.object({
 const getErrorMessage = (error: any): string => {
   const message = error?.message?.toLowerCase() || '';
   
+  if (message.includes('failed to fetch') || message.includes('network error')) {
+    return 'Network error. Please try opening the app in a new tab, or check your internet connection.';
+  }
   if (message.includes('user already registered') || message.includes('already exists')) {
     return 'An account with this email already exists. Try signing in instead.';
   }
@@ -28,9 +31,6 @@ const getErrorMessage = (error: any): string => {
   }
   if (message.includes('rate limit') || message.includes('too many requests')) {
     return 'Too many attempts. Please wait a moment and try again.';
-  }
-  if (message.includes('network') || message.includes('fetch')) {
-    return 'Network error. Please check your connection and try again.';
   }
   
   return error?.message || 'Something went wrong. Please try again.';

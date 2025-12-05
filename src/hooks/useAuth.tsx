@@ -43,26 +43,41 @@ export function useAuth() {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error };
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      return { error };
+    } catch (err: any) {
+      console.error('SignIn network error:', err);
+      return { error: { message: 'Network error. Please check your connection and try again.' } };
+    }
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
-    const redirectUrl = `${window.location.origin}/`;
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: { full_name: fullName },
-      },
-    });
-    return { error };
+    try {
+      const redirectUrl = `${window.location.origin}/`;
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: { full_name: fullName },
+        },
+      });
+      return { error };
+    } catch (err: any) {
+      console.error('SignUp network error:', err);
+      return { error: { message: 'Network error. Please check your connection and try again.' } };
+    }
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    return { error };
+    try {
+      const { error } = await supabase.auth.signOut();
+      return { error };
+    } catch (err: any) {
+      console.error('SignOut network error:', err);
+      return { error: { message: 'Network error during sign out.' } };
+    }
   };
 
   return { user, session, loading, signIn, signUp, signOut };
