@@ -4,7 +4,12 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useInactivityLogout } from "@/hooks/useInactivityLogout";
+import { InactivityWarning } from "@/components/InactivityWarning";
 import Auth from "./pages/Auth";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 import Wallet from "./pages/Wallet";
 import BestCard from "./pages/BestCard";
@@ -17,8 +22,6 @@ const queryClient = new QueryClient();
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
-  
-  console.log('ProtectedRoute - loading:', loading, 'user:', !!user);
   
   if (loading) {
     return (
@@ -81,6 +84,23 @@ function LogoutRoute() {
   );
 }
 
+// Wrapper component that provides inactivity logout for protected routes
+function InactivityWrapper({ children }: { children: React.ReactNode }) {
+  const { showWarning, secondsRemaining, stayLoggedIn, logout } = useInactivityLogout();
+  
+  return (
+    <>
+      {children}
+      <InactivityWarning
+        open={showWarning}
+        secondsRemaining={secondsRemaining}
+        onStayLoggedIn={stayLoggedIn}
+        onLogout={logout}
+      />
+    </>
+  );
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -88,15 +108,18 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-<Route path="/" element={<HomeRedirect />} />
+          <Route path="/" element={<HomeRedirect />} />
           <Route path="/logout" element={<LogoutRoute />} />
           <Route path="/auth" element={<PublicRoute><Auth /></PublicRoute>} />
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/wallet" element={<ProtectedRoute><Wallet /></ProtectedRoute>} />
-          <Route path="/best" element={<ProtectedRoute><BestCard /></ProtectedRoute>} />
-          <Route path="/benefits" element={<ProtectedRoute><Benefits /></ProtectedRoute>} />
-          <Route path="/offers" element={<ProtectedRoute><Offers /></ProtectedRoute>} />
-          <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+          <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/dashboard" element={<ProtectedRoute><InactivityWrapper><Dashboard /></InactivityWrapper></ProtectedRoute>} />
+          <Route path="/wallet" element={<ProtectedRoute><InactivityWrapper><Wallet /></InactivityWrapper></ProtectedRoute>} />
+          <Route path="/best" element={<ProtectedRoute><InactivityWrapper><BestCard /></InactivityWrapper></ProtectedRoute>} />
+          <Route path="/benefits" element={<ProtectedRoute><InactivityWrapper><Benefits /></InactivityWrapper></ProtectedRoute>} />
+          <Route path="/offers" element={<ProtectedRoute><InactivityWrapper><Offers /></InactivityWrapper></ProtectedRoute>} />
+          <Route path="/analytics" element={<ProtectedRoute><InactivityWrapper><Analytics /></InactivityWrapper></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><InactivityWrapper><Settings /></InactivityWrapper></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
