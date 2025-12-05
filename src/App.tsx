@@ -20,8 +20,11 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-12 h-12 rounded-full gold-gradient animate-pulse" />
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#000' }}>
+        <div className="text-center">
+          <div className="w-12 h-12 rounded-full gold-gradient animate-pulse mx-auto mb-4" />
+          <p style={{ color: '#d4af37' }}>Loading AlphaCard...</p>
+        </div>
       </div>
     );
   }
@@ -38,8 +41,11 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
   
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-12 h-12 rounded-full gold-gradient animate-pulse" />
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#000' }}>
+        <div className="text-center">
+          <div className="w-12 h-12 rounded-full gold-gradient animate-pulse mx-auto mb-4" />
+          <p style={{ color: '#d4af37' }}>Loading AlphaCard...</p>
+        </div>
       </div>
     );
   }
