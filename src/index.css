@@ -129,12 +129,6 @@
     backdrop-filter: blur(20px);
     border: 1px solid hsl(var(--border) / 0.5);
   }
-  
-  .card-dark {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border) / 0.5);
-    border-radius: var(--radius);
-  }
 }
 
 @layer utilities {
