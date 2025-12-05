@@ -9,19 +9,15 @@ import { getCardEfficiency, getBestCardByCategory } from '@/lib/bestCardEngine';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { LogOut, TrendingUp, Coins, Sparkles } from 'lucide-react';
+import { Settings, TrendingUp, Coins, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const { cards, isLoading: cardsLoading } = useCards();
   const { thisMonthSpending, categorySpending, isLoading: transactionsLoading } = useTransactions();
   const navigate = useNavigate();
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/auth');
-  };
 
   const totalRewards = cards.reduce((sum, card) => sum + Number(card.reward_balance), 0);
   const bestCard = cards.length > 0 ? cards.reduce((best, card) => {
@@ -54,8 +50,8 @@ export default function Dashboard() {
               {user?.user_metadata?.full_name || 'User'}
             </h1>
           </div>
-          <Button variant="ghost" size="icon" onClick={handleSignOut}>
-            <LogOut className="w-5 h-5 text-muted-foreground" />
+          <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
+            <Settings className="w-5 h-5 text-muted-foreground" />
           </Button>
         </div>
       </div>
