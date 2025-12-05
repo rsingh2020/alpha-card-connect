@@ -8,21 +8,38 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        if (mounted) {
+          setSession(session);
+          setUser(session?.user ?? null);
+          setLoading(false);
+        }
+      }
+    );
+
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      if (mounted) {
+        if (error) {
+          console.error('Auth session error:', error);
+        }
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
       }
-    );
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
+    }).catch((err) => {
+      console.error('Failed to get session:', err);
+      if (mounted) {
+        setLoading(false);
+      }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
