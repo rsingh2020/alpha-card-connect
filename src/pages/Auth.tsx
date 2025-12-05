@@ -5,14 +5,36 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { CreditCard, Loader2 } from 'lucide-react';
+import { CreditCard, Loader2, AlertCircle } from 'lucide-react';
 import { z } from 'zod';
 
 const authSchema = z.object({
-  email: z.string().email('Invalid email address'),
+  email: z.string().trim().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
-  fullName: z.string().min(2, 'Name must be at least 2 characters').optional(),
+  fullName: z.string().trim().min(2, 'Name must be at least 2 characters').optional(),
 });
+
+const getErrorMessage = (error: any): string => {
+  const message = error?.message?.toLowerCase() || '';
+  
+  if (message.includes('user already registered') || message.includes('already exists')) {
+    return 'An account with this email already exists. Try signing in instead.';
+  }
+  if (message.includes('invalid login credentials') || message.includes('invalid credentials')) {
+    return 'Invalid email or password. Please check your credentials.';
+  }
+  if (message.includes('email not confirmed')) {
+    return 'Please verify your email before signing in.';
+  }
+  if (message.includes('rate limit') || message.includes('too many requests')) {
+    return 'Too many attempts. Please wait a moment and try again.';
+  }
+  if (message.includes('network') || message.includes('fetch')) {
+    return 'Network error. Please check your connection and try again.';
+  }
+  
+  return error?.message || 'Something went wrong. Please try again.';
+};
 
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -21,6 +43,7 @@ export default function Auth() {
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
   
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
@@ -29,11 +52,12 @@ export default function Auth() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    setSubmitError(null);
 
     const validation = authSchema.safeParse({
-      email,
+      email: email.trim(),
       password,
-      fullName: isSignUp ? fullName : undefined,
+      fullName: isSignUp ? fullName.trim() : undefined,
     });
 
     if (!validation.success) {
@@ -51,20 +75,22 @@ export default function Auth() {
 
     try {
       if (isSignUp) {
-        const { error } = await signUp(email, password, fullName);
+        const { error } = await signUp(email.trim(), password, fullName.trim());
         if (error) throw error;
         toast({ title: 'Account created!', description: 'Welcome to AlphaCard' });
         navigate('/dashboard');
       } else {
-        const { error } = await signIn(email, password);
+        const { error } = await signIn(email.trim(), password);
         if (error) throw error;
         toast({ title: 'Welcome back!' });
         navigate('/dashboard');
       }
     } catch (error: any) {
+      const errorMessage = getErrorMessage(error);
+      setSubmitError(errorMessage);
       toast({
-        title: 'Error',
-        description: error.message || 'Something went wrong',
+        title: isSignUp ? 'Sign up failed' : 'Sign in failed',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {
@@ -91,6 +117,14 @@ export default function Auth() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6 glass p-8 rounded-2xl">
+          {/* Submit Error Alert */}
+          {submitError && (
+            <div className="flex items-start gap-3 p-4 rounded-lg bg-destructive/10 border border-destructive/20">
+              <AlertCircle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+              <p className="text-sm text-destructive">{submitError}</p>
+            </div>
+          )}
+
           {isSignUp && (
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>

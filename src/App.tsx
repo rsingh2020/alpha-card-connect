@@ -53,6 +53,20 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function HomeRedirect() {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="w-12 h-12 rounded-full gold-gradient animate-pulse" />
+      </div>
+    );
+  }
+  
+  return <Navigate to={user ? "/dashboard" : "/auth"} replace />;
+}
+
 function LogoutRoute() {
   const { signOut } = useAuth();
   
@@ -74,7 +88,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-<Route path="/" element={<Navigate to="/auth" replace />} />
+<Route path="/" element={<HomeRedirect />} />
           <Route path="/logout" element={<LogoutRoute />} />
           <Route path="/auth" element={<PublicRoute><Auth /></PublicRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
