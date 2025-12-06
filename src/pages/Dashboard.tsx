@@ -6,11 +6,13 @@ import { CircularProgress } from '@/components/CircularProgress';
 import { SpendingChart } from '@/components/SpendingChart';
 import { CreditCard3D } from '@/components/CreditCard3D';
 import { UserAvatar } from '@/components/UserAvatar';
+import { RecentTransactions } from '@/components/RecentTransactions';
+import { MonthlyTrendsChart } from '@/components/MonthlyTrendsChart';
 import { getCardEfficiency, getBestCardByCategory } from '@/lib/bestCardEngine';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Settings, TrendingUp, Coins, Sparkles, LogOut, User, ChevronDown } from 'lucide-react';
+import { Settings, TrendingUp, Coins, Sparkles, LogOut, User, ChevronDown, Receipt, BarChart3 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -24,7 +26,7 @@ import {
 export default function Dashboard() {
   const { user, signOut } = useAuth();
   const { cards, isLoading: cardsLoading } = useCards();
-  const { thisMonthSpending, categorySpending, isLoading: transactionsLoading } = useTransactions();
+  const { transactions, thisMonthSpending, categorySpending, isLoading: transactionsLoading } = useTransactions();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -157,9 +159,31 @@ export default function Dashboard() {
           <SpendingChart data={categorySpending} />
         </Card>
 
+        {/* Monthly Spending Trends */}
+        <Card className="p-6 glass gold-border animate-slide-up" style={{ animationDelay: '0.3s' }}>
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 className="w-5 h-5 text-primary" />
+            <h2 className="font-display text-lg font-semibold text-foreground">
+              Monthly Trends
+            </h2>
+          </div>
+          <MonthlyTrendsChart transactions={transactions} />
+        </Card>
+
+        {/* Recent Transactions */}
+        <Card className="p-6 glass gold-border animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          <div className="flex items-center gap-2 mb-4">
+            <Receipt className="w-5 h-5 text-primary" />
+            <h2 className="font-display text-lg font-semibold text-foreground">
+              Recent Transactions
+            </h2>
+          </div>
+          <RecentTransactions transactions={transactions} limit={5} />
+        </Card>
+
         {/* Best Card Recommendation */}
         {bestCardForTopCategory && topCategory && (
-          <Card className="p-6 glass gold-border animate-slide-up" style={{ animationDelay: '0.3s' }}>
+          <Card className="p-6 glass gold-border animate-slide-up" style={{ animationDelay: '0.5s' }}>
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="w-5 h-5 text-primary" />
               <h2 className="font-display text-lg font-semibold text-foreground">
