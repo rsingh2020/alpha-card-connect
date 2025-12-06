@@ -5,6 +5,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { CircularProgress } from '@/components/CircularProgress';
 import { SpendingChart } from '@/components/SpendingChart';
 import { CreditCard3D } from '@/components/CreditCard3D';
+import { UserAvatar } from '@/components/UserAvatar';
 import { getCardEfficiency, getBestCardByCategory } from '@/lib/bestCardEngine';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -67,10 +68,8 @@ export default function Dashboard() {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                  <User className="w-4 h-4 text-primary" />
-                </div>
+              <Button variant="ghost" className="flex items-center gap-2 p-1">
+                <UserAvatar size="sm" />
                 <ChevronDown className="w-4 h-4 text-muted-foreground" />
               </Button>
             </DropdownMenuTrigger>
