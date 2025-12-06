@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -8,41 +8,31 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let mounted = true;
-
+    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        if (mounted) {
-          setSession(session);
-          setUser(session?.user ?? null);
-          setLoading(false);
-        }
-      }
-    );
-
-    supabase.auth.getSession().then(({ data: { session }, error }) => {
-      if (mounted) {
-        if (error) {
-          console.error('Auth session error:', error);
-        }
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
       }
+    );
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
     }).catch((err) => {
       console.error('Failed to get session:', err);
-      if (mounted) {
-        setLoading(false);
-      }
+      setLoading(false);
     });
 
     return () => {
-      mounted = false;
       subscription.unsubscribe();
     };
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = useCallback(async (email: string, password: string) => {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       return { error };
@@ -50,9 +40,9 @@ export function useAuth() {
       console.error('SignIn network error:', err);
       return { error: { message: 'Network error. Please check your connection and try again.' } };
     }
-  };
+  }, []);
 
-  const signUp = async (email: string, password: string, fullName: string) => {
+  const signUp = useCallback(async (email: string, password: string, fullName: string) => {
     try {
       const redirectUrl = `${window.location.origin}/`;
       const { error } = await supabase.auth.signUp({
@@ -68,9 +58,9 @@ export function useAuth() {
       console.error('SignUp network error:', err);
       return { error: { message: 'Network error. Please check your connection and try again.' } };
     }
-  };
+  }, []);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     try {
       const { error } = await supabase.auth.signOut();
       return { error };
@@ -78,7 +68,7 @@ export function useAuth() {
       console.error('SignOut network error:', err);
       return { error: { message: 'Network error during sign out.' } };
     }
-  };
+  }, []);
 
   return { user, session, loading, signIn, signUp, signOut };
 }
