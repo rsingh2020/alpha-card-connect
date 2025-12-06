@@ -9,14 +9,22 @@ import { getCardEfficiency, getBestCardByCategory } from '@/lib/bestCardEngine';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Settings, TrendingUp, Coins, Sparkles } from 'lucide-react';
+import { Settings, TrendingUp, Coins, Sparkles, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { cards, isLoading: cardsLoading } = useCards();
   const { thisMonthSpending, categorySpending, isLoading: transactionsLoading } = useTransactions();
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogout = async () => {
+    await signOut();
+    toast({ title: 'Logged out successfully' });
+    navigate('/auth');
+  };
 
 
   const totalRewards = cards.reduce((sum, card) => sum + Number(card.reward_balance), 0);
@@ -50,9 +58,14 @@ export default function Dashboard() {
               {user?.user_metadata?.full_name || 'User'}
             </h1>
           </div>
-          <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
-            <Settings className="w-5 h-5 text-muted-foreground" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
+              <Settings className="w-5 h-5 text-muted-foreground" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={handleLogout}>
+              <LogOut className="w-5 h-5 text-muted-foreground" />
+            </Button>
+          </div>
         </div>
       </div>
 
