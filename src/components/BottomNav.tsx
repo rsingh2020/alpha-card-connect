@@ -1,10 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Wallet, Sparkles, Gift, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, Wallet, Bot, Gift, BarChart3 } from 'lucide-react';
 
 const navItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { path: '/wallet', icon: Wallet, label: 'Wallet' },
-  { path: '/best', icon: Sparkles, label: 'Best' },
+  { path: '/advisor', icon: Bot, label: 'AI' },
   { path: '/benefits', icon: Gift, label: 'Benefits' },
   { path: '/analytics', icon: BarChart3, label: 'Analytics' },
 ];
