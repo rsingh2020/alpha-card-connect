@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useBenefits } from '@/hooks/useBenefits';
 import { useCards } from '@/hooks/useCards';
 import { BottomNav } from '@/components/BottomNav';
+import { AppHeader } from '@/components/AppHeader';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -66,24 +67,23 @@ export default function Benefits() {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Header */}
-      <div className="p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Gift className="w-6 h-6 text-primary" />
-            <h1 className="text-2xl font-display font-bold text-foreground">Benefits</h1>
-          </div>
-          
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-              <Button size="icon" className="gold-gradient text-primary-foreground">
-                <Plus className="w-5 h-5" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="glass border-border">
-              <DialogHeader>
-                <DialogTitle className="font-display gold-text">Add Bonus Tracker</DialogTitle>
-              </DialogHeader>
+      <AppHeader 
+        title="Benefits" 
+        icon={<Gift className="w-6 h-6 text-primary" />} 
+      />
+      
+      {/* Add Button */}
+      <div className="px-6 mb-4 flex justify-end max-w-lg mx-auto">
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogTrigger asChild>
+            <Button size="icon" className="gold-gradient text-primary-foreground">
+              <Plus className="w-5 h-5" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="glass border-border">
+            <DialogHeader>
+              <DialogTitle className="font-display gold-text">Add Bonus Tracker</DialogTitle>
+            </DialogHeader>
               
               <div className="space-y-4 pt-4">
                 <div className="space-y-2">
@@ -162,7 +162,6 @@ export default function Benefits() {
             </DialogContent>
           </Dialog>
         </div>
-      </div>
 
       <div className="px-6 space-y-6 max-w-lg mx-auto">
         {/* Active Bonuses */}

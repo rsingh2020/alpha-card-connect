@@ -1,41 +1,23 @@
-import { useAuth } from '@/hooks/useAuth';
 import { useCards } from '@/hooks/useCards';
 import { useTransactions } from '@/hooks/useTransactions';
 import { BottomNav } from '@/components/BottomNav';
+import { AppHeader } from '@/components/AppHeader';
 import { CircularProgress } from '@/components/CircularProgress';
 import { SpendingChart } from '@/components/SpendingChart';
 import { CreditCard3D } from '@/components/CreditCard3D';
-import { UserAvatar } from '@/components/UserAvatar';
 import { RecentTransactions } from '@/components/RecentTransactions';
 import { MonthlyTrendsChart } from '@/components/MonthlyTrendsChart';
 import { getCardEfficiency, getBestCardByCategory } from '@/lib/bestCardEngine';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Settings, TrendingUp, Coins, Sparkles, LogOut, User, ChevronDown, Receipt, BarChart3 } from 'lucide-react';
+import { TrendingUp, Coins, Sparkles, Receipt, BarChart3 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/hooks/use-toast';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 export default function Dashboard() {
-  const { user, signOut } = useAuth();
   const { cards, isLoading: cardsLoading } = useCards();
   const { transactions, thisMonthSpending, categorySpending, isLoading: transactionsLoading } = useTransactions();
   const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const handleLogout = async () => {
-    await signOut();
-    toast({ title: 'Logged out successfully' });
-    navigate('/auth');
-  };
-
 
   const totalRewards = cards.reduce((sum, card) => sum + Number(card.reward_balance), 0);
   const bestCard = cards.length > 0 ? cards.reduce((best, card) => {
@@ -59,40 +41,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Header */}
-      <div className="p-6 space-y-1">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-muted-foreground text-sm">Welcome back,</p>
-            <h1 className="text-2xl font-display font-bold gold-text">
-              {user?.user_metadata?.full_name || 'User'}
-            </h1>
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2 p-1">
-                <UserAvatar size="sm" />
-                <ChevronDown className="w-4 h-4 text-muted-foreground" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 bg-card border-border z-50">
-              <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
-                <User className="w-4 h-4 mr-2" />
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
-                <Settings className="w-4 h-4 mr-2" />
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">
-                <LogOut className="w-4 h-4 mr-2" />
-                Log Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+      <AppHeader showGreeting />
 
       <div className="px-6 space-y-6 max-w-4xl mx-auto">
         {/* Quick Stats */}

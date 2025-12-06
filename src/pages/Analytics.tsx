@@ -1,4 +1,5 @@
 import { BottomNav } from '@/components/BottomNav';
+import { AppHeader } from '@/components/AppHeader';
 import { useCards } from '@/hooks/useCards';
 import { useTransactions } from '@/hooks/useTransactions';
 import { 
@@ -65,14 +66,11 @@ export default function Analytics() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="p-6 pt-12">
-        <div className="flex items-center gap-3">
-          <BarChart3 className="w-8 h-8 text-primary" />
-          <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
-        </div>
-        <p className="text-muted-foreground text-sm mt-1">Internal metrics dashboard</p>
-      </header>
+      <AppHeader 
+        title="Analytics" 
+        subtitle="Internal metrics dashboard"
+        icon={<BarChart3 className="w-6 h-6 text-primary" />} 
+      />
 
       <div className="px-4 space-y-6">
         {/* Aggregated Metrics */}

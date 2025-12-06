@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useCards } from '@/hooks/useCards';
 import { BottomNav } from '@/components/BottomNav';
+import { AppHeader } from '@/components/AppHeader';
 import { CreditCard3D } from '@/components/CreditCard3D';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -77,31 +78,29 @@ export default function Wallet() {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Header */}
-      <div className="p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <WalletIcon className="w-6 h-6 text-primary" />
-            <h1 className="text-2xl font-display font-bold text-foreground">Wallet</h1>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            {cards.length >= 2 && (
-              <Link to="/compare">
-                <Button variant="outline" size="icon" className="border-primary text-primary hover:bg-primary/10">
-                  <GitCompare className="w-5 h-5" />
-                </Button>
-              </Link>
-            )}
-            <Dialog open={isOpen} onOpenChange={setIsOpen}>
-              <DialogTrigger asChild>
-                <Button size="icon" className="gold-gradient text-primary-foreground">
-                  <Plus className="w-5 h-5" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="glass border-border max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle className="font-display gold-text">Add New Card</DialogTitle>
+      <AppHeader 
+        title="Wallet" 
+        icon={<WalletIcon className="w-6 h-6 text-primary" />}
+      />
+      
+      {/* Action buttons */}
+      <div className="px-6 mb-4 flex justify-end gap-2 max-w-lg mx-auto">
+        {cards.length >= 2 && (
+          <Link to="/compare">
+            <Button variant="outline" size="icon" className="border-primary text-primary hover:bg-primary/10">
+              <GitCompare className="w-5 h-5" />
+            </Button>
+          </Link>
+        )}
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogTrigger asChild>
+            <Button size="icon" className="gold-gradient text-primary-foreground">
+              <Plus className="w-5 h-5" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="glass border-border max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="font-display gold-text">Add New Card</DialogTitle>
               </DialogHeader>
               
               <div className="space-y-4 pt-4">
@@ -236,9 +235,7 @@ export default function Wallet() {
               </div>
             </DialogContent>
           </Dialog>
-          </div>
         </div>
-      </div>
 
       <div className="px-6 space-y-6 max-w-lg mx-auto">
         {/* Summary Card */}
