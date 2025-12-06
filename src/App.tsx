@@ -16,6 +16,7 @@ import BestCard from "./pages/BestCard";
 import Benefits from "./pages/Benefits";
 import Offers from "./pages/Offers";
 import CardComparison from "./pages/CardComparison";
+import Advisor from "./pages/Advisor";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
@@ -118,6 +119,7 @@ const App = () => (
           <Route path="/wallet" element={<ProtectedRoute><InactivityWrapper><Wallet /></InactivityWrapper></ProtectedRoute>} />
           <Route path="/compare" element={<ProtectedRoute><InactivityWrapper><CardComparison /></InactivityWrapper></ProtectedRoute>} />
           <Route path="/best" element={<ProtectedRoute><InactivityWrapper><BestCard /></InactivityWrapper></ProtectedRoute>} />
+          <Route path="/advisor" element={<ProtectedRoute><InactivityWrapper><Advisor /></InactivityWrapper></ProtectedRoute>} />
           <Route path="/benefits" element={<ProtectedRoute><InactivityWrapper><Benefits /></InactivityWrapper></ProtectedRoute>} />
           <Route path="/offers" element={<ProtectedRoute><InactivityWrapper><Offers /></InactivityWrapper></ProtectedRoute>} />
           <Route path="/analytics" element={<ProtectedRoute><InactivityWrapper><Analytics /></InactivityWrapper></ProtectedRoute>} />
