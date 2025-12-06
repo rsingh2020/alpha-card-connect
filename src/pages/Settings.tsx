@@ -324,6 +324,27 @@ function SecuritySection() {
 
 function SessionsSection() {
   const { sessions, loading, currentSessionId, revokeSession, revokeAllOtherSessions } = useSessions();
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      // Delete current session from database
+      if (currentSessionId) {
+        await supabase.from('user_sessions').delete().eq('id', currentSessionId);
+      }
+      await signOut();
+      toast({ title: 'Logged out successfully' });
+      navigate('/auth');
+    } catch (error) {
+      toast({ title: 'Error', description: 'Failed to log out.', variant: 'destructive' });
+    } finally {
+      setLoggingOut(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -335,6 +356,28 @@ function SessionsSection() {
 
   return (
     <div className="space-y-6">
+      {/* Log Out Current Session */}
+      <div className="glass rounded-2xl p-6 space-y-4">
+        <h2 className="text-lg font-semibold">Log Out</h2>
+        <p className="text-sm text-muted-foreground">
+          Sign out of your current session on this device.
+        </p>
+        <Button
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className="w-full sm:w-auto"
+          variant="destructive"
+        >
+          {loggingOut ? (
+            <Loader2 className="w-4 h-4 animate-spin mr-2" />
+          ) : (
+            <LogOut className="w-4 h-4 mr-2" />
+          )}
+          Log Out
+        </Button>
+      </div>
+
+      {/* Active Sessions */}
       <div className="glass rounded-2xl p-6 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Active Sessions</h2>
