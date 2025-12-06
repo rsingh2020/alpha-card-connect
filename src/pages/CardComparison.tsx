@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useCards } from '@/hooks/useCards';
 import { BottomNav } from '@/components/BottomNav';
+import { AppHeader } from '@/components/AppHeader';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, GitCompare, Check, X, DollarSign, Percent, Star } from 'lucide-react';
+import { ArrowLeft, GitCompare, DollarSign, Percent, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SPENDING_CATEGORIES, SpendingCategory } from '@/types';
 import { Card as CardType } from '@/types';
@@ -47,19 +48,19 @@ export default function CardComparison() {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Header */}
-      <div className="p-6">
-        <div className="flex items-center gap-4 mb-6">
-          <Link to="/wallet">
-            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-          </Link>
-          <div className="flex items-center gap-3">
-            <GitCompare className="w-6 h-6 text-primary" />
-            <h1 className="text-2xl font-display font-bold text-foreground">Compare Cards</h1>
-          </div>
-        </div>
+      <AppHeader 
+        title="Compare Cards" 
+        icon={<GitCompare className="w-6 h-6 text-primary" />}
+      />
+      
+      {/* Back button */}
+      <div className="px-6 mb-4">
+        <Link to="/wallet">
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground gap-2">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Wallet
+          </Button>
+        </Link>
       </div>
 
       <div className="px-6 space-y-6 max-w-4xl mx-auto">

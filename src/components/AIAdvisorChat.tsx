@@ -40,28 +40,20 @@ export function AIAdvisorChat() {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Chat Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl gold-gradient">
-            <Sparkles className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <div>
-            <h2 className="font-display font-semibold text-foreground">AlphaCard AI</h2>
-            <p className="text-xs text-muted-foreground">Your financial advisor</p>
-          </div>
-        </div>
-        {messages.length > 0 && (
+      {/* Clear button */}
+      {messages.length > 0 && (
+        <div className="flex justify-end px-4 pt-2">
           <Button
             variant="ghost"
-            size="icon"
+            size="sm"
             onClick={clearMessages}
-            className="text-muted-foreground hover:text-destructive"
+            className="text-muted-foreground hover:text-destructive gap-2"
           >
             <Trash2 className="w-4 h-4" />
+            Clear Chat
           </Button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Messages */}
       <ScrollArea className="flex-1 p-4" ref={scrollRef}>

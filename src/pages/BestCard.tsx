@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useCards } from '@/hooks/useCards';
 import { BottomNav } from '@/components/BottomNav';
+import { AppHeader } from '@/components/AppHeader';
 import { CreditCard3D } from '@/components/CreditCard3D';
 import { CircularProgress } from '@/components/CircularProgress';
 import { getBestCard } from '@/lib/bestCardEngine';
@@ -36,16 +37,11 @@ export default function BestCard() {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Header */}
-      <div className="p-6">
-        <div className="flex items-center gap-3">
-          <Sparkles className="w-6 h-6 text-primary" />
-          <div>
-            <h1 className="text-2xl font-display font-bold text-foreground">Best Card</h1>
-            <p className="text-sm text-muted-foreground">AI-Optimized Recommendation</p>
-          </div>
-        </div>
-      </div>
+      <AppHeader 
+        title="Best Card" 
+        subtitle="AI-Optimized Recommendation"
+        icon={<Sparkles className="w-6 h-6 text-primary" />}
+      />
 
       <div className="px-6 space-y-6 max-w-lg mx-auto">
         {/* Input Form */}
