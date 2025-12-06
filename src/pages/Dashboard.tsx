@@ -30,7 +30,7 @@ export default function Dashboard() {
   if (cardsLoading || transactionsLoading) {
     return (
       <div className="min-h-screen bg-background p-6 pb-24">
-        <div className="max-w-lg mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-6">
           <Skeleton className="h-12 w-48" />
           <Skeleton className="h-40 w-full rounded-2xl" />
           <Skeleton className="h-64 w-full rounded-2xl" />
@@ -56,7 +56,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="px-6 space-y-6 max-w-lg mx-auto">
+      <div className="px-6 space-y-6 max-w-4xl mx-auto">
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-4">
           <Card className="p-4 glass gold-border">
