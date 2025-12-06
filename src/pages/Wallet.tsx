@@ -9,7 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Plus, Wallet as WalletIcon, Loader2 } from 'lucide-react';
+import { Plus, Wallet as WalletIcon, Loader2, GitCompare } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { SPENDING_CATEGORIES } from '@/types';
 
 const CARD_COLORS = [
@@ -84,15 +85,23 @@ export default function Wallet() {
             <h1 className="text-2xl font-display font-bold text-foreground">Wallet</h1>
           </div>
           
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-              <Button size="icon" className="gold-gradient text-primary-foreground">
-                <Plus className="w-5 h-5" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="glass border-border max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="font-display gold-text">Add New Card</DialogTitle>
+          <div className="flex items-center gap-2">
+            {cards.length >= 2 && (
+              <Link to="/compare">
+                <Button variant="outline" size="icon" className="border-primary text-primary hover:bg-primary/10">
+                  <GitCompare className="w-5 h-5" />
+                </Button>
+              </Link>
+            )}
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+              <DialogTrigger asChild>
+                <Button size="icon" className="gold-gradient text-primary-foreground">
+                  <Plus className="w-5 h-5" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="glass border-border max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="font-display gold-text">Add New Card</DialogTitle>
               </DialogHeader>
               
               <div className="space-y-4 pt-4">
@@ -227,6 +236,7 @@ export default function Wallet() {
               </div>
             </DialogContent>
           </Dialog>
+          </div>
         </div>
       </div>
 
